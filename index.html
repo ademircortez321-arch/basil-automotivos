@@ -43,7 +43,7 @@ body{font-family:'Barlow',sans-serif;background:var(--bg);color:var(--text);min-
 .cat-btn.has-data{border-color:var(--neon);background:rgba(255,140,0,.04)}
 .cat-btn .cat-icon{font-size:24px;display:block;margin-bottom:5px;line-height:1}
 .cat-btn .cat-name{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;color:var(--muted);letter-spacing:.5px;line-height:1.2}
-.cat-btn .cat-total{font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;color:var(--neon);margin-top:3px;min-height:15px}
+.cat-btn .cat-total{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;color:var(--neon);margin-top:3px;min-height:15px;line-height:1.4}
 .cat-btn.wide{grid-column:span 2;display:flex;align-items:center;gap:12px;padding:13px 16px}
 .cat-btn.wide .cat-icon{font-size:20px;margin-bottom:0;flex-shrink:0}
 .cat-btn.wide .cat-name{font-size:12px;color:var(--text);text-align:left}
@@ -330,7 +330,7 @@ hr.divider{border:none;border-top:1px solid var(--border);margin:14px 0}
     <hr class="divider">
     <button class="btn-green" onclick="gerarWhats()">📱 ENVIAR WHATSAPP</button>
     <button class="btn-primary" onclick="gerarPDF()">📄 GERAR PDF</button>
-    <button class="btn-secondary" onclick="novoOrcamento()">🔄 NOVO ORÇAMENTO</button>
+    <button style="background:rgba(85,107,47,.25);color:#8fbc45;border:1.5px solid #6b8c2a;width:100%;padding:16px;border-radius:var(--radius);font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:15px;letter-spacing:1px;cursor:pointer;margin-top:8px" onclick="novoOrcamento()">🔄 NOVO ORÇAMENTO</button>
     <button class="btn-secondary" onclick="ir('screen-historico')">📋 HISTÓRICO DE OS</button>
     <button class="btn-secondary" onclick="ir('screen-manutencao')">🔩 HISTÓRICO DE MANUTENÇÕES</button>
     <button class="btn-secondary" onclick="ir('screen-backup')">💾 BACKUP</button>
@@ -351,8 +351,23 @@ hr.divider{border:none;border-top:1px solid var(--border);margin:14px 0}
     <div id="cat-lista"></div>
     <button class="btn-secondary" onclick="abrirAddItem()" style="margin-top:10px">+ ITEM PERSONALIZADO</button>
     <hr class="divider">
-    <label class="field-label">MÃO DE OBRA DESTA ÁREA (R$)</label>
-    <input type="number" class="field-input" id="cat-mo" placeholder="0,00" oninput="salvarMO()">
+
+    <!-- DESTAQUE MÃO DE OBRA -->
+    <div style="background:linear-gradient(135deg,rgba(255,140,0,.12),rgba(255,140,0,.06));border:2px solid var(--neon);border-radius:14px;padding:16px;margin-top:4px;position:relative;overflow:hidden">
+      <!-- brilho de fundo -->
+      <div style="position:absolute;top:-20px;right:-20px;width:80px;height:80px;background:radial-gradient(circle,rgba(255,140,0,.25),transparent 70%);pointer-events:none"></div>
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
+        <span style="font-size:22px">🔧</span>
+        <div>
+          <div style="font-family:'Barlow Condensed',sans-serif;font-size:17px;font-weight:900;color:var(--neon);letter-spacing:2px;line-height:1">MÃO DE OBRA</div>
+          <div style="font-size:11px;color:var(--muted);letter-spacing:1px">VALOR DESTA ÁREA (R$)</div>
+        </div>
+      </div>
+      <input type="number" class="field-input" id="cat-mo" placeholder="0,00" oninput="salvarMO()"
+        style="background:rgba(255,140,0,.08);border:1.5px solid rgba(255,140,0,.5);font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:700;color:var(--neon);letter-spacing:1px;text-align:center">
+      <div style="font-size:11px;color:rgba(255,140,0,.6);text-align:center;margin-top:6px">↑ TOQUE PARA INSERIR O VALOR ↑</div>
+    </div>
+
     <div class="warn-box" style="margin-top:12px">
       ⚠️ <strong>Garantia da Basil Automotivos:</strong><br>
       A garantia cobre exclusivamente a <strong>mão de obra</strong> realizada pela oficina.<br>
@@ -448,7 +463,7 @@ hr.divider{border:none;border-top:1px solid var(--border);margin:14px 0}
     <div class="header-content">
       <button class="back-btn" onclick="ir('screen-home')">← VOLTAR</button>
       <div style="font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:700;color:var(--neon);position:relative;z-index:1">HISTÓRICO DE OS</div>
-      <div style="width:60px"></div>
+      <button onclick="document.getElementById('modal-zerar-os').style.display='flex'" style="background:rgba(255,140,0,.08);border:1px solid rgba(255,140,0,.3);color:var(--neon);font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:11px;letter-spacing:1px;padding:6px 8px;border-radius:8px;cursor:pointer;position:relative;z-index:1">🔢 ZERAR</button>
     </div>
   </div>
   <div class="content" id="hist-lista"></div>
@@ -461,7 +476,7 @@ hr.divider{border:none;border-top:1px solid var(--border);margin:14px 0}
     <div class="header-content">
       <button class="back-btn" onclick="ir('screen-historico')">← HISTÓRICO</button>
       <div style="font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:700;color:var(--neon);position:relative;z-index:1">ORÇAMENTO</div>
-      <div style="width:60px"></div>
+      <button onclick="abrirExcluirOS()" style="background:rgba(220,50,50,.12);border:1px solid rgba(220,50,50,.4);color:var(--red);font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:12px;letter-spacing:1px;padding:6px 10px;border-radius:8px;cursor:pointer;position:relative;z-index:1">🗑 EXCLUIR</button>
     </div>
   </div>
   <div class="content" id="hist-detalhe-content"></div>
@@ -561,6 +576,28 @@ hr.divider{border:none;border-top:1px solid var(--border);margin:14px 0}
         FECHAR E VOLTAR À TELA INICIAL
       </button>
     </div>
+  </div>
+</div>
+
+<!-- MODAL EXCLUIR OS -->
+<div id="modal-excluir-os" style="display:none" class="modal-overlay">
+  <div class="modal-box" style="text-align:center">
+    <div style="font-size:32px;margin-bottom:8px">🗑️</div>
+    <div style="font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:900;color:var(--red);letter-spacing:1px;margin-bottom:6px">EXCLUIR ORÇAMENTO</div>
+    <div id="modal-excluir-os-info" style="font-size:13px;color:var(--muted);margin-bottom:16px;line-height:1.6"></div>
+    <button onclick="confirmarExcluirOS()" style="background:rgba(220,50,50,.15);border:1.5px solid var(--red);color:var(--red);width:100%;padding:14px;border-radius:10px;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:15px;letter-spacing:1px;cursor:pointer;margin-bottom:10px">✅ SIM, EXCLUIR</button>
+    <button onclick="document.getElementById('modal-excluir-os').style.display='none'" class="btn-secondary">CANCELAR</button>
+  </div>
+</div>
+
+<!-- MODAL ZERAR CONTADOR -->
+<div id="modal-zerar-os" style="display:none" class="modal-overlay">
+  <div class="modal-box" style="text-align:center">
+    <div style="font-size:32px;margin-bottom:8px">🔢</div>
+    <div style="font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:900;color:var(--neon);letter-spacing:1px;margin-bottom:6px">ZERAR CONTADOR DE OS</div>
+    <p style="font-size:13px;color:var(--muted);line-height:1.6;margin-bottom:16px">O próximo orçamento gerado vai começar do <strong style="color:var(--neon)">A01</strong>.<br><span style="font-size:11px;color:#cc8800">⚠️ Não apaga o histórico — só reseta a numeração.</span></p>
+    <button onclick="zerarContadorOS()" style="background:rgba(255,140,0,.12);border:1.5px solid var(--neon);color:var(--neon);width:100%;padding:14px;border-radius:10px;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:15px;letter-spacing:1px;cursor:pointer;margin-bottom:10px">⚡ ZERAR AGORA</button>
+    <button onclick="document.getElementById('modal-zerar-os').style.display='none'" class="btn-secondary">CANCELAR</button>
   </div>
 </div>
 
@@ -762,9 +799,15 @@ function atualizarHome(){
     });
     tm+=Number(state.mo[c]||0);
     const totEl=document.getElementById('tot-'+c);
-    if(totEl) totEl.textContent=ct>0?'R$ '+ct.toLocaleString('pt-BR'):'';
+    const moV=Number(state.mo[c]||0);
+    if(totEl){
+      let txt='';
+      if(ct>0) txt='🔩 R$ '+ct.toLocaleString('pt-BR');
+      if(moV>0) txt+=(txt?'<br>':'')+'🔧 R$ '+moV.toLocaleString('pt-BR');
+      totEl.innerHTML=txt;
+    }
     const btnEl=document.getElementById('btn-'+c);
-    if(btnEl) btnEl.classList.toggle('has-data',ct>0||!!state.mo[c]);
+    if(btnEl) btnEl.classList.toggle('has-data',ct>0||moV>0);
   });
   const desc=tp*state.desconto/100;
   const total=tp+tm-desc;
@@ -948,25 +991,36 @@ function fecharOsGerada(){
 
 function abrirPdfGerado(){
   if(!_osHtmlGerado) return;
-  // Escreve no iframe oculto e dispara impressão nativa
-  // Funciona em iOS PWA, Android e PC — print dialog permite "Salvar como PDF"
-  const frame = document.getElementById('print-frame');
-  frame.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;border:none;z-index:-1';
-  const doc = frame.contentDocument || frame.contentWindow.document;
-  doc.open();
-  doc.write(_osHtmlGerado);
-  doc.close();
-  // Aguarda carregar imagens antes de imprimir
-  frame.onload = function(){
+  // Método mais confiável: nova janela com document.write
+  // Em iOS PWA standalone window.open é bloqueado — usa print via iframe
+  const isStandalone = window.navigator.standalone === true;
+  const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+
+  if(isIOS && isStandalone){
+    // iOS PWA: iframe interno + print()
+    const frame = document.getElementById('print-frame');
+    frame.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;border:none;z-index:9999;background:#fff';
+    const doc = frame.contentDocument || frame.contentWindow.document;
+    doc.open(); doc.write(_osHtmlGerado); doc.close();
     setTimeout(()=>{
-      frame.contentWindow.focus();
-      frame.contentWindow.print();
-      // Restaura iframe oculto após impressão
+      try { frame.contentWindow.print(); } catch(e){}
       setTimeout(()=>{
         frame.style.cssText = 'position:fixed;top:-9999px;left:-9999px;width:1px;height:1px;border:none';
-      }, 1000);
-    }, 400);
-  };
+      }, 2000);
+    }, 600);
+  } else {
+    // Safari browser, Android, PC: abre nova aba
+    const w = window.open('','_blank');
+    if(w){ w.document.write(_osHtmlGerado); w.document.close(); }
+    else {
+      // Popup bloqueado — fallback blob URL
+      const blob = new Blob([_osHtmlGerado],{type:'text/html'});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url; a.target = '_blank'; a.click();
+      setTimeout(()=>URL.revokeObjectURL(url), 3000);
+    }
+  }
 }
 
 function enviarWhatsModal(){
@@ -975,15 +1029,55 @@ function enviarWhatsModal(){
 }
 
 function enviarEmailModal(){
-  // window.open p/ mailto é mais confiável que location.href no iOS
+  // Cria <a> invisível e clica — mais confiável que window.open/location.href no iOS
   const mailto = 'mailto:basilautomotivos@gmail.com'
     +'?subject='+encodeURIComponent(_osEmailSubj)
     +'&body='+encodeURIComponent(_osEmailBody);
-  window.open(mailto, '_blank');
+  const a = document.createElement('a');
+  a.href = mailto; a.target = '_blank';
+  document.body.appendChild(a); a.click();
+  setTimeout(()=>document.body.removeChild(a), 500);
+}
+
+// ===== EXCLUIR OS INDIVIDUAL =====
+let _excluirOsIdx = -1;
+
+function abrirExcluirOS(){
+  const hist = getHistorico();
+  const idx  = _detalheIdx;
+  if(idx < 0 || idx >= hist.length) return;
+  const h = hist[idx];
+  _excluirOsIdx = idx;
+  document.getElementById('modal-excluir-os-info').innerHTML =
+    `OS <strong style="color:var(--neon)">${h.os||'—'}</strong> · ${h.data}<br>`+
+    `Cliente: <strong>${h.cliente.nome||h.cliente.placa||'—'}</strong><br>`+
+    `<span style="color:var(--red)">Esta ação não pode ser desfeita.</span>`;
+  document.getElementById('modal-excluir-os').style.display='flex';
+}
+
+function confirmarExcluirOS(){
+  if(_excluirOsIdx < 0) return;
+  const hist = getHistorico();
+  hist.splice(_excluirOsIdx, 1);
+  salvarHistorico(hist);
+  _excluirOsIdx = -1;
+  document.getElementById('modal-excluir-os').style.display='none';
+  ir('screen-historico');
+}
+
+function zerarContadorOS(){
+  // Zera apenas apagando o histórico de numeração — próximo será A01
+  // Opção: limpar histórico inteiro ou só resetar contador via histórico vazio fake
+  const hist = getHistorico();
+  // Remove a propriedade .os de todos os registros existentes para resetar sequência
+  // Na prática: salva histórico com último OS forçado como A00 via item fantasma temporário
+  // Solução limpa: guardar contador separado no localStorage
+  localStorage.setItem('basil_os_override','A00');
+  document.getElementById('modal-zerar-os').style.display='none';
+  alert('✅ Contador zerado! Próximo orçamento será A01.');
 }
 
 
-// ===== NOVO ORÇAMENTO / BUSCA =====
 let buscaClienteSelecionado = null;
 
 function novoOrcamento(){
@@ -1149,7 +1243,9 @@ function renderHistorico(){
     </div></div>`).join('');
 }
 
+let _detalheIdx = -1;
 function verDetalhe(i){
+  _detalheIdx = i;
   const h=getHistorico()[i];const div=document.getElementById('hist-detalhe-content');
   let linhas='';
   Object.keys(CATS).forEach(cat=>{
